@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android phone seller brands</title>
+    
+    <!-- css -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffd700;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23000" width="1200" height="800"/><text x="50%" y="50%" font-size="60" fill="%23667eea" text-anchor="middle" dy=".3em">Latest Android Phones 2026</text></svg>') center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        /* Products */
+        .featured, .products-section {
+            background: #f8fafc;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 1rem;
+        }
+
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-to-cart, .buy-now {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .add-to-cart:hover {
+            background: #2563eb;
+        }
+
+        .buy-now {
+            background: #10b981;
+            color: white;
+        }
+
+        .buy-now:hover {
+            background: #059669;
+        }
+
+        /* Cart Page */
+        .cart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 1rem;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            color: #ef4444;
+            margin-left: auto;
+        }
+
+        .remove-item {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: -300px;
+            background: #10b981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            transition: right 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .notification.show {
+            right: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 5rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: #667eea;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Page transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2><i class="fas fa-mobile-alt"></i> Utkarsh Phones</h2>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a class="nav-link active" data-page="home">Home</a></li>
+                <li><a class="nav-link" data-page="products">Products</a></li>
+                <li><a class="nav-link" data-page="cart">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a class="nav-link" data-page="about">About</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Best Android Phones 2026</h1>
+                <p>Discover the latest Samsung Galaxy S26, iQOO 15R, Vivo V70 & more at unbeatable prices!</p>
+                <button class="cta-button" onclick="showPage('products')">Shop Now</button>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="featured section">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-id="1">
+                        <div class="product-image">
+                            <div style="background: linear-gradient(135deg, #667eea, #764ba2); height:100%; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; font-weight:bold;">S26 Ultra</div>
+                            <div class="product-actions">
+                                <button class="action-btn like" data-id="1"><i class="far fa-heart"></i></button>
+                                <button class="action-btn share" data-id="1"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Samsung Galaxy S26 Ultra</h3>
+                            <p>Latest flagship with S Pen, 200MP camera</p>
+                            <p class="price">₹1,29,999</p>
+                            <div class="product-buttons">
+                                <button class="add-to-cart" data-id="1">Add to Cart</button>
+                                <button class="buy-now" data-id="1">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="2">
+                        <div class="product-image">
+                            <div style="background: linear-gradient(135deg, #059669, #10b981); height:100%; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; font-weight:bold;">iQOO 15R</div>
+                            <div class="product-actions">
+                                <button class="action-btn like" data-id="2"><i class="far fa-heart"></i></button>
+                                <button class="action-btn share" data-id="2"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>iQOO 15R</h3>
+                            <p>Gaming beast with Snapdragon 8 Gen 4</p>
+                            <p class="price">₹42,999</p>
+                            <div class="product-buttons">
+                                <button class="add-to-cart" data-id="2">Add to Cart</button>
+                                <button class="buy-now" data-id="2">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="3">
+                        <div class="product-image">
+                            <div style="background: linear-gradient(135deg, #f97316, #ef4444); height:100%; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; font-weight:bold;">V70 Elite</div>
+                            <div class="product-actions">
+                                <button class="action-btn like" data-id="3"><i class="far fa-heart"></i></button>
+                                <button class="action-btn share" data-id="3"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Vivo V70 Elite</h3>
+                            <p>Camera king with Zeiss optics</p>
+                            <p class="price">₹38,999</p>
+                            <div class="product-buttons">
+                                <button class="add-to-cart" data-id="3">Add to Cart</button>
+                                <button class="buy-now" data-id="3">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="4">
+                        <div class="product-image">
+                            <div style="background: linear-gradient(135deg, #8b5cf6, #a78bfa); height:100%; display:flex; align-items:center; justify-content:center; color:white; font-size:22px; font-weight:bold;">OnePlus 14</div>
+                            <div class="product-actions">
+                                <button class="action-btn like" data-id="4"><i class="far fa-heart"></i></button>
+                                <button class="action-btn share" data-id="4"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>OnePlus 14</h3>
+                            <p>Super fast charging, OxygenOS 16</p>
+                            <p class="price">₹64,999</p>
+                            <div class="product-buttons">
+                                <button class="add-to-cart" data-id="4">Add to Cart</button>
+                                <button class="buy-now" data-id="4">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page">
+        <section class="products-section section">
+            <div class="container">
+                <h2 class="section-title">All Products</h2>
+                <div class="products-grid">
+                    <!-- Same product cards as featured + more -->
+                    <div class="product-card" data-id="5">
+                        <div class="product-image">
+                            <div style="background: linear-gradient(135deg, #06b6d4, #0ea5e9); height:100%; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; font-weight:bold;">Nothing Phone 3</div>
+                            <div class="product-actions">
+                                <button class="action-btn like" data-id="5"><i class="far fa-heart"></i></button>
+                                <button class="action-btn share" data-id="5"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Nothing Phone 3</h3>
+                            <p>Glyph interface, transparent design</p>
+                            <p class="price">₹49,999</p>
+                            <div class="product-buttons">
+                                <button class="add-to-cart" data-id="5">Add to Cart</button>
+                                <button class="buy-now" data-id="5">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more products here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart" class="page">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Your Cart</h2>
+                <div class="cart-container" id="cartItems">
+                    <div class="empty-cart" id="emptyCart">
+                        <i class="fas fa-shopping-cart" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>Start shopping to add items to your cart</p>
+                        <button class="cta-button" onclick="showPage('products')">Start Shopping</button>
+                    </div>
+                </div>
+                <div id="cartTotal" class="cart-total" style="display: none;">
+                    Total: <span id="totalAmount">₹0</span>
+                    <button class="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="section" style="background: #f8fafc;">
+            <div class="container">
+                <h2 class="section-title">About Hajj Mobile Store</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Premium Android Phones</h2>
+                        <p>Handpicked latest Android smartphones from top brands. Made by Hajj Glorify - 1st Year Student Project for college viva.</p>
+                        <p>Features modern responsive design, cart functionality, like/share buttons just like Flipkart. Built with pure HTML, CSS & JavaScript.</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>✅ Fully responsive (mobile-first)</li>
+                            <li>✅ LocalStorage cart persistence</li>
+                            <li>✅ Smooth animations & transitions</li>
+                            <li>✅ Latest 2026 phone models</li>
+                        </ul>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 300px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white;">
+                        <div>
+                            <h3 style="font-size: 2rem; margin-bottom: 1rem;">🎓 Student Project</h3>
+                            <p>Perfect for 1st year college viva!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Utkarsh Mobile Store. Made by <strong>Utkarsh Patwa</strong> - 1st Year Student Project | Delhi, India</p>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Global variables
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentPage = 'home';
+
+        // DOM elements
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link[data-page]');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        const cartCount = document.getElementById('cart-count');
+        const notification = document.getElementById('notification');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            renderCart();
+            setupEventListeners();
+        });
+
+        // Page navigation
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            currentPage = pageId;
+            window.scrollTo(0, 0);
+        }
+
+        // Navigation event listeners
+        function setupEventListeners() {
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPage(this.dataset.page);
+                });
+            });
+
+            // Hamburger menu
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Product actions
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.add-to-cart')) {
+                    addToCart(e.target.closest('.add-to-cart'));
+                }
+                if (e.target.closest('.buy-now')) {
+                    buyNow(e.target.closest('.buy-now'));
+                }
+                if (e.target.closest('.like')) {
+                    toggleLike(e.target.closest('.like'));
+                }
+                if (e.target.closest('.remove-item')) {
+                    removeFromCart(e.target.closest('.remove-item'));
+                }
+            });
+        }
+
+        // Cart functions
+        function addToCart(button) {
+            const productCard = button.closest('.product-card');
+            const productId = button.dataset.id || productCard.dataset.id;
+            const productName = productCard.querySelector('h3').textContent;
+            const productPrice = productCard.querySelector('.price').textContent;
+            
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                image: 'phone-placeholder'
+            };
+
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification('Added to cart! 🛒');
+        }
+
+        function buyNow(button) {
+            addToCart(button);
+            showNotification('Added to cart! Redirecting to checkout...');
+            setTimeout(() => showPage('cart'), 1000);
+        }
+
+        function removeFromCart(button) {
+            const cartItem = button.closest('.cart-item');
+            const productId = cartItem.dataset.id;
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+            showNotification('Removed from cart!');
+        }
+
+        function toggleLike(button) {
+            const icon = button.querySelector('i');
+            icon.classList.toggle('far');
+            icon.classList.toggle('fas');
+            button.style.background = icon.classList.contains('fas') ? '#ef4444' : 'rgba(255,255,255,0.9)';
+        }
+
+        function updateCartCount() {
+            cartCount.textContent = cart.length;
+        }
+
+        function renderCart() {
+            const cartContainer = document.getElementById('cartItems');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalAmount = document.getElementById('totalAmount');
+
+            if (cart.length === 0) {
+                emptyCart.style.display = 'block';
+                cartTotal.style.display = 'none';
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            cartTotal.style.display = 'block';
+
+            let total = 0;
+            const cartHTML = cart.map(item => {
+                const priceNum = parseInt(item.price.replace(/[^\d]/g, ''));
+                total += priceNum;
+                return `
+                    <div class="cart-item" data-id="${item.id}">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect fill='%23e2e8f0' width='80' height='80' rx='10'/><text x='40' y='45' font-size='12' text-anchor='middle' fill='%2364748b'>${item.name.split(' ')[0]}</text></svg>" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>1 x ${item.price}</p>
+                        </div>
+                        <div class="cart-item-price">${item.price}</div>
+                        <button class="remove-item">Remove</button>
+                    </div>
+                `;
+            }).join('');
+
+            cartContainer.innerHTML = cartHTML;
+            totalAmount.textContent = `₹${total.toLocaleString()}`;
+        }
+
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Checkout simulation
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('checkout-btn')) {
+                if (cart.length > 0) {
+                    showNotification('Order placed successfully! 🎉');
+                    cart = [];
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
