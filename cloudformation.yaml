@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation Template for Project 1:
+  Secure, High-Performance Static Web Hosting with Private Amazon S3 and Amazon CloudFront (Origin Access Control - OAC).
+  Designed by Utkarsh Patwa (@utkarshx96) for AWS Student Builder Group Leadership Proof-of-Work.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: android-phone-seller
+    Description: Name prefix for the S3 bucket and CloudFront resources.
+
+Resources:
+  # 1. Private Amazon S3 Bucket (Strictly zero public access)
+  StaticWebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ProjectName}-${AWS::AccountId}-${AWS::Region}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+
+  # 2. CloudFront Origin Access Control (OAC) - Modern Best Practice (replaces legacy OAI)
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${ProjectName}-OAC'
+        Description: Origin Access Control for private S3 access from CloudFront
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # 3. CloudFront CDN Distribution (Global Edge Caching & HTTPS)
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub 'CloudFront Distribution for ${ProjectName}'
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_100 # North America and Europe edge locations (Lowest cost / Free Tier safe)
+        HttpVersion: http2and3
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt StaticWebsiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+            S3OriginConfig: {}
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          # AWS Managed CachingOptimized Policy ID
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+
+  # 4. S3 Bucket Policy (Grants read access exclusively to CloudFront via OAC)
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticWebsiteBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${StaticWebsiteBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution.Id}'
+
+Outputs:
+  S3BucketName:
+    Description: Name of the private Amazon S3 Bucket
+    Value: !Ref StaticWebsiteBucket
+
+  CloudFrontDistributionId:
+    Description: CloudFront Distribution ID
+    Value: !Ref CloudFrontDistribution
+
+  LiveWebsiteURL:
+    Description: Live HTTPS URL of the deployed website
+    Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
